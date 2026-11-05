@@ -32,7 +32,7 @@
         'Nenhuma restrição de visualização ou operação (superusuário)',
         'Exige registro de auditoria em ações críticas e estornos'
       ],
-      allowedRoutes:['visao-geral','catalogo','pedidos','personalizados','clientes','estoque','financeiro','fornecedores','empresa','apresentacao']
+      allowedRoutes:['visao-geral','catalogo','pedidos','personalizados','clientes','estoque','financeiro','fornecedores','empresa','apresentacao','api']
     },
     {
       id:'atendimento',
@@ -60,7 +60,7 @@
         'PROIBIDO alteração manual de saldo de estoque físico ou registro de perdas',
         'PROIBIDO concessão de crédito fiado acima da política comercial sem autorização'
       ],
-      allowedRoutes:['visao-geral','catalogo','pedidos','personalizados','clientes','empresa','apresentacao']
+      allowedRoutes:['visao-geral','catalogo','pedidos','personalizados','clientes','empresa','apresentacao','api']
     },
     {
       id:'estoque',
@@ -88,7 +88,7 @@
         'PROIBIDO acesso aos dados cadastrais e histórico financeiro de clientes',
         'PROIBIDO precificação de venda ou alteração de tabelas comerciais'
       ],
-      allowedRoutes:['visao-geral','estoque','pedidos','fornecedores','empresa','apresentacao']
+      allowedRoutes:['visao-geral','estoque','pedidos','fornecedores','empresa','apresentacao','api']
     },
     {
       id:'financeiro',
@@ -116,7 +116,7 @@
         'PROIBIDO alteração do status de separação física sem conferência da expedição',
         'PROIBIDO estorno de pagamentos sem justificativa auditada'
       ],
-      allowedRoutes:['visao-geral','financeiro','pedidos','clientes','empresa','apresentacao']
+      allowedRoutes:['visao-geral','financeiro','pedidos','clientes','empresa','apresentacao','api']
     },
     {
       id:'compras',

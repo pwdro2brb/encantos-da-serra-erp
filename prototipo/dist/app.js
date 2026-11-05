@@ -53,7 +53,8 @@ const paths={
   receipt:'M5 3h14v18l-3-2-4 2-4-2-3 2V3Zm4 5h6M9 12h6',
   lock:'M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm-7 4v3M7 11V7a5 5 0 0 1 10 0v4',
   compass:'m14.8 9.2-2.3 5.6-5.6 2.3 2.3-5.6 5.6-2.3ZM12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z',
-  shield:'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'
+  shield:'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+  terminal:'M4 17l6-5-6-5m8 10h8'
 };
 
 function icon(name){
@@ -120,7 +121,8 @@ function getNavigationForProfile(prof){
     ['estoque','box','Estoque & Lotes'],
     ['financeiro','wallet','Financeiro'],
     ['fornecedores','compass','Produção Estrada Real'],
-    ['empresa','mountain','Sobre a empresa']
+    ['empresa','mountain','Sobre a empresa'],
+    ['api','terminal','Console da API']
   ];
 
   if(prof.id==='cliente_b2b'){
@@ -1261,6 +1263,87 @@ function presentation(){
   </main>`;
 }
 
+let apiLastResponse = null;
+let apiLastEndpoint = '/health';
+let apiLastStatus = 200;
+let apiLastLatency = 12;
+
+function apiConsolePage(){
+  const endpoints = [
+    { method: 'GET', path: '/health', desc: 'Health Check & Diagnóstico do Sistema', tag: 'Status' },
+    { method: 'GET', path: '/api/routes', desc: 'Catálogo de Rotas e Discovery da API', tag: 'Discovery' },
+    { method: 'GET', path: '/api/stats', desc: 'Estatísticas Globais (Produtos, Pedidos, Saldos)', tag: 'Métricas' },
+    { method: 'GET', path: '/api/products?limit=5', desc: 'Produtos do Catálogo Oficial Paginado', tag: 'Produtos' },
+    { method: 'GET', path: '/api/products/p1', desc: 'Ficha Completa do Queijo Provolone Recheado', tag: 'Produtos' },
+    { method: 'GET', path: '/api/products/p1/price', desc: 'Preço e Simulação de Parcelamento em 3x/6x', tag: 'Preços' },
+    { method: 'GET', path: '/api/categories', desc: 'Lista de Categorias e Contagens de Produtos', tag: 'Categorias' },
+    { method: 'GET', path: '/api/prices', desc: 'Resumo Financeiro e Produtos com Desconto', tag: 'Preços' },
+    { method: 'GET', path: '/api/orders', desc: 'Lista de Pedidos no Fluxo da Estrada Real', tag: 'Vendas' },
+    { method: 'GET', path: '/api/lots', desc: 'Lotes de Estoque com Regra FEFO', tag: 'Estoque' },
+    { method: 'GET', path: '/api/receivables', desc: 'Contas a Receber e Títulos de Fiado', tag: 'Financeiro' },
+    { method: 'GET', path: '/api/profiles', desc: 'Matriz de Permissões e Perfis RBAC', tag: 'Segurança' },
+    { method: 'POST', path: '/api/check-weight', body: JSON.stringify({ expectedGrams: 1000, actualGrams: 1045 }), desc: 'Conferência de Peso com Tolerância ±5%', tag: 'Qualidade' }
+  ];
+
+  return pageHeading(
+    'INTEGRAÇÃO & SERVIÇOS RESTFUL',
+    'Console & Rotas da API',
+    'Execute chamadas em tempo real aos endpoints do ERP e catálogo oficial da Estrada Real.',
+    `<div class="actions">
+      <a class="btn" href="/api/export/json" download="encantos_export.json">${icon('box')} Baixar JSON</a>
+      <a class="btn" href="/api/export/csv" download="encantos_produtos.csv">${icon('receipt')} Baixar CSV</a>
+      <a class="btn primary" href="http://127.0.0.1:8000/docs" target="_blank" rel="noopener noreferrer">${icon('link')} Swagger OpenAPI ${icon('arrow')}</a>
+    </div>`
+  ) + `
+  <div class="api-console-layout">
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Endpoints RESTful Disponíveis</h2>
+          <p class="subtitle">Clique em qualquer endpoint para testar a requisição ao vivo</p>
+        </div>
+        <span class="badge green">🟢 API Ativa</span>
+      </div>
+      <div class="api-endpoints-list">
+        ${endpoints.map((ep, idx) => `
+          <div class="api-endpoint-card">
+            <div class="api-endpoint-info">
+              <span class="badge ${ep.method === 'GET' ? 'blue' : 'amber'}">${ep.method}</span>
+              <code>${esc(ep.path)}</code>
+              <span class="badge gray">${ep.tag}</span>
+            </div>
+            <p class="api-endpoint-desc">${esc(ep.desc)}</p>
+            <div class="api-endpoint-actions">
+              <button class="btn soft small" data-action="run-api-test" data-idx="${idx}" data-method="${ep.method}" data-path="${esc(ep.path)}" ${ep.body ? `data-body='${esc(ep.body)}'` : ''}>
+                ${icon('play')} Executar
+              </button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="panel api-result-panel">
+      <div class="panel-head">
+        <div>
+          <h2>Resposta da API</h2>
+          <p class="subtitle" id="api-result-sub">${apiLastEndpoint ? `Última chamada: <code>${esc(apiLastEndpoint)}</code>` : 'Nenhuma requisição executada ainda'}</p>
+        </div>
+        <div id="api-result-badge">
+          ${apiLastStatus ? `<span class="badge ${apiLastStatus < 300 ? 'green' : 'red'}">${apiLastStatus} OK · ${apiLastLatency}ms</span>` : ''}
+        </div>
+      </div>
+      <div class="api-terminal-window">
+        <pre id="api-result-output" class="api-json-viewer">${esc(JSON.stringify(apiLastResponse || {
+          message: 'Selecione um endpoint à esquerda e clique em "Executar" para testar ao vivo a rota!',
+          status: 'pronto',
+          rotas_disponiveis: endpoints.length
+        }, null, 2))}</pre>
+      </div>
+    </div>
+  </div>`;
+}
+
 function render(){
   const r=route();
   if(r==='solicitar') $('#app').innerHTML=publicPage();
@@ -1282,7 +1365,8 @@ function render(){
       financeiro:finance,
       fornecedores:officialSuppliersPage,
       catalogo:officialCatalogPage,
-      empresa:officialCompanyPage
+      empresa:officialCompanyPage,
+      api:apiConsolePage
     };
     $('#app').innerHTML=shell((viewMap[r]||dashboard)(),r);
   }
@@ -1315,6 +1399,38 @@ document.addEventListener('click',async ev=>{
       go('visao-geral');
       render();
       toast('Perfil alternado para '+currentProfile().name+' com sucesso.');
+    }
+    if(a==='run-api-test'){
+      const path=b.dataset.path;
+      const method=b.dataset.method||'GET';
+      const body=b.dataset.body;
+      const subEl=$('#api-result-sub');
+      const badgeEl=$('#api-result-badge');
+      const outEl=$('#api-result-output');
+      if(subEl) subEl.innerHTML=`Chamando <code>${esc(method)} ${esc(path)}</code>...`;
+      if(outEl) outEl.textContent='Carregando resposta da API...';
+      const t0=performance.now();
+      try {
+        const opts={ method, headers: { 'Content-Type': 'application/json' } };
+        if(body) opts.body=body;
+        const res=await fetch(path, opts);
+        const t1=performance.now();
+        const latency=Math.round(t1-t0);
+        const json=await res.json();
+        apiLastResponse=json;
+        apiLastEndpoint=path;
+        apiLastStatus=res.status;
+        apiLastLatency=latency;
+        if(subEl) subEl.innerHTML=`Última chamada: <code>${esc(method)} ${esc(path)}</code>`;
+        if(badgeEl) badgeEl.innerHTML=`<span class="badge ${res.ok?'green':'red'}">${res.status} ${res.statusText||'OK'} · ${latency}ms</span>`;
+        if(outEl) outEl.textContent=JSON.stringify(json, null, 2);
+        toast(`API: ${method} ${path} -> ${res.status} (${latency}ms)`);
+      } catch(err) {
+        if(subEl) subEl.innerHTML=`Erro na chamada: <code>${esc(path)}</code>`;
+        if(badgeEl) badgeEl.innerHTML=`<span class="badge red">Falha de conexão</span>`;
+        if(outEl) outEl.textContent='Erro ao comunicar com a API: '+err.message;
+        toast('Erro de rede ao chamar a API');
+      }
     }
     if(a==='filter'){ filter=b.dataset.filter; render(); }
     if(a==='finance-filter'){ financeFilter=b.dataset.filter; render(); }
