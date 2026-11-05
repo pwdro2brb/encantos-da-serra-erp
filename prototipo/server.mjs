@@ -89,13 +89,20 @@ function sendError(res, statusCode, message) {
 }
 
 function getAllProducts() {
-  const merged = [...productsCatalog];
+  const map = new Map();
+  // Catálogo oficial integrado (69 produtos com atributos ERP e fotos)
   for (const p of state.products) {
-    if (!merged.some(m => String(m.id) === String(p.id) || m.slug === p.id)) {
-      merged.push(p);
+    const key = p.slug || String(p.apiId || p.id);
+    map.set(key, p);
+  }
+  // Se houver algum item extra em productsCatalog
+  for (const p of productsCatalog) {
+    const key = p.slug || String(p.id);
+    if (!map.has(key)) {
+      map.set(key, p);
     }
   }
-  return merged;
+  return Array.from(map.values());
 }
 
 // Servidor HTTP com rotas de API e arquivos estáticos
@@ -287,7 +294,7 @@ export const server = http.createServer(async (req, res) => {
     if (productMatch && req.method === 'GET') {
       const idOrSlug = decodeURIComponent(productMatch[1]);
       const all = getAllProducts();
-      const found = all.find(p => String(p.id) === idOrSlug || p.slug === idOrSlug);
+      const found = all.find(p => String(p.id) === idOrSlug || String(p.apiId) === idOrSlug || p.slug === idOrSlug);
       if (!found) return sendError(res, 404, `Produto '${idOrSlug}' não encontrado.`);
       return sendJson(res, 200, found);
     }
@@ -297,7 +304,7 @@ export const server = http.createServer(async (req, res) => {
     if (productImagesMatch && req.method === 'GET') {
       const idOrSlug = decodeURIComponent(productImagesMatch[1]);
       const all = getAllProducts();
-      const found = all.find(p => String(p.id) === idOrSlug || p.slug === idOrSlug);
+      const found = all.find(p => String(p.id) === idOrSlug || String(p.apiId) === idOrSlug || p.slug === idOrSlug);
       if (!found) return sendError(res, 404, `Produto '${idOrSlug}' não encontrado.`);
       return sendJson(res, 200, {
         product_id: found.id,
@@ -314,7 +321,7 @@ export const server = http.createServer(async (req, res) => {
     if (productPriceMatch && req.method === 'GET') {
       const idOrSlug = decodeURIComponent(productPriceMatch[1]);
       const all = getAllProducts();
-      const found = all.find(p => String(p.id) === idOrSlug || p.slug === idOrSlug);
+      const found = all.find(p => String(p.id) === idOrSlug || String(p.apiId) === idOrSlug || p.slug === idOrSlug);
       if (!found) return sendError(res, 404, `Produto '${idOrSlug}' não encontrado.`);
       const price = Number(found.price) || 0;
       const p3 = price > 0 ? (price / 3).toFixed(2).replace('.', ',') : '0,00';
