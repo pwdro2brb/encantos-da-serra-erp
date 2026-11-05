@@ -1,0 +1,45 @@
+Funcionalidades propostas do protótipo Encantos da Serra
+
+O protótipo Encantos da Serra foi desenvolvido no contexto de um projeto acadêmico de Engenharia da Computação voltado a apoiar a organização dos processos de uma empresa. A proposta é demonstrar como um sistema integrado de gestão pode reunir o atendimento ao cliente, o acompanhamento dos pedidos, o controle de estoque e os recebimentos em um único ambiente.
+
+O fluxo proposto começa no contato do cliente pelo WhatsApp ou Instagram. A equipe pode compartilhar um link para um formulário, no qual o cliente seleciona os produtos e informa seus dados de contato, quantidades, data desejada e observações. No protótipo, o envio desse formulário gera um pedido identificado por um protocolo e preserva a origem do contato. A integração automática com os aplicativos de mensagens faz parte de uma evolução futura.
+
+Visão geral da operação
+
+O painel inicial reúne a quantidade de pedidos em andamento, o valor dos pedidos concluídos no dia, o saldo a receber e os alertas de estoque. Também apresenta os pedidos recentes, a distribuição por etapa de atendimento e um resumo das atividades. Esses indicadores permitem demonstrar como a equipe poderia identificar pendências e definir prioridades na rotina.
+
+Catálogo e informações da empresa
+
+A demonstração utiliza o logotipo e uma seleção de 13 produtos consultados no site oficial da Encantos da Serra, com fotos, nomes, apresentações e preços registrados em 03/11/2026. O catálogo permite buscar produtos, filtrar a seleção, consultar detalhes e iniciar uma solicitação simulada. A área Sobre a empresa reúne os contatos publicados, as 11 categorias do site e os links para as fontes. Divergências encontradas nas páginas foram sinalizadas para confirmação com a empresa.
+
+Atendimento e acompanhamento dos pedidos
+
+Os pedidos aparecem em um quadro dividido nas etapas Novo pedido, Em análise, Em separação, Pronto e Concluído. Ao abrir um cartão, a equipe consulta o cliente, os produtos, o valor, a data desejada, a condição de pagamento e as observações. O avanço entre etapas ocorre por botões no detalhe do pedido. A proposta facilita o acompanhamento de cada solicitação desde o recebimento até a entrega.
+
+Pedidos personalizados
+
+Uma visão específica reúne solicitações como cestas, kits, cartões e embalagens especiais. O cliente pode descrever sua ideia no formulário, e a equipe registra a aprovação do orçamento antes de avançar o atendimento. O valor de frete e os custos adicionais da personalização dependem de confirmação comercial. A versão definitiva deverá conservar as revisões do orçamento e a evidência da aprovação do cliente.
+
+Clientes de varejo e comerciais
+
+O cadastro diferencia clientes de consumo final, identificados como B2C, e clientes comerciais, identificados como B2B. A equipe pode consultar o contato, o canal de origem e o histórico de pedidos de cada cliente. Para os clientes comerciais, a recompra cria uma nova solicitação a partir de um pedido anterior, utilizando os preços do catálogo da demonstração e condições sujeitas a confirmação.
+
+Estoque, validade e separação
+
+O módulo de estoque apresenta os produtos por lote, com quantidade, localização e validade. A demonstração permite registrar entradas e perdas com justificativa. A separação sugere os lotes liberados com vencimento mais próximo, seguindo a lógica FEFO. As regras propostas alertam sobre lotes com até 15 dias de validade e bloqueiam pedidos online para lotes com até 7 dias, incluindo esse limite. A conclusão do pedido realiza a baixa uma única vez e impede a operação quando o estoque liberado é insuficiente. O cenário também contempla produto cuja descrição oficial informa validade indeterminada.
+
+Essas regras demonstram possibilidades do ERP e ainda precisam ser validadas com a empresa. Instruções de embalagem, conservação, saldos, custos e localizações exibidos na operação são exemplos acadêmicos.
+
+Financeiro e vendas a prazo
+
+O financeiro demonstra o acompanhamento de contas a receber, com identificação do cliente, pedido, valor, vencimento e saldo em aberto. Uma venda simulada a prazo gera uma conta com a data combinada para pagamento. A equipe pode registrar recebimentos parciais, acompanhar a redução do saldo e identificar contas vencidas ou quitadas. O controle de fiado é uma funcionalidade proposta pelo projeto, sem confirmação de que corresponda à política comercial atual da empresa.
+
+Produção, documentação e apresentação
+
+A área Produção e marcas apresenta a produção identificada nas descrições consultadas. Capacidades, certificações e relações de fornecimento dependem de levantamento com a empresa. O projeto também inclui uma proposta de banco de dados com 29 tabelas, dicionário de colunas, diagramas e documentação de escopo. Esse modelo é separado da interface e ainda não está conectado ao protótipo. Um modo de apresentação no navegador auxilia a demonstração das funcionalidades durante reuniões.
+
+Acesso e limites da demonstração
+
+O protótipo pode ser acessado pelo navegador em outro computador, sem baixar o projeto, pelo endereço https://encantos-da-serra-erp-demo.sureporcupine.chatgpt.site. O acesso público foi liberado para apresentação em 04/11/2026.
+
+A versão atual serve para validar os fluxos, a organização das telas e as prioridades de desenvolvimento. Clientes, pedidos, lotes, custos, saldos e recebimentos são simulados e ficam armazenados apenas no navegador utilizado. As alterações feitas em um computador não aparecem automaticamente em outro. Não há envio de mensagens, compra real, processamento de pagamentos, autenticação por perfil ou conexão com banco de dados. A implementação desses recursos, das regras reais de atacado, das compras completas e dos relatórios gerenciais constitui a próxima etapa do projeto.

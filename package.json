@@ -1,0 +1,15 @@
+{
+  "name": "encantos-da-serra-erp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Protótipo acadêmico do ERP Encantos da Serra: pedidos, catálogo, clientes, estoque e contas a receber.",
+  "homepage": "https://encantos-da-serra-erp-demo.sureporcupine.chatgpt.site",
+  "scripts": {
+    "start": "node prototipo/server.mjs",
+    "test": "node --test prototipo/core.test.cjs",
+    "check": "node --check prototipo/dist/app.js && node --check prototipo/dist/core.js && node --check prototipo/dist/official-ui.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

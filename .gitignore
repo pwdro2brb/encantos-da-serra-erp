@@ -1,0 +1,23 @@
+# Arquivos de trabalho e metadados locais de hospedagem
+tmp/
+publicacao/
+.openai/
+prototipo/.openai/
+.codex/
+.agents/
+node_modules/
+__pycache__/
+*.py[cod]
+*.log
+.env
+.env.*
+!.env.example
+
+# Artefatos regeneráveis com empacotar.py
+INICIAR.html
+Encantos_da_Serra_Kit_Apresentacao.zip
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+Desktop.ini
