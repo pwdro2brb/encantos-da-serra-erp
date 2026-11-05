@@ -150,7 +150,8 @@ function getNavigationForProfile(prof){
       ['pedidos','board','Quadro de pedidos'],
       ['personalizados','spark','Personalizados'],
       ['clientes','users','Clientes'],
-      ['empresa','mountain','Sobre a empresa']
+      ['empresa','mountain','Sobre a empresa'],
+      ['api','terminal','Console da API']
     ];
   }
   if(prof.id==='estoque'){
@@ -158,7 +159,8 @@ function getNavigationForProfile(prof){
       ['visao-geral','grid','Visão geral'],
       ['estoque','box','Estoque & Lotes'],
       ['pedidos','board','Separação & Expedição'],
-      ['fornecedores','compass','Produtores']
+      ['fornecedores','compass','Produtores'],
+      ['api','terminal','Console da API']
     ];
   }
   if(prof.id==='financeiro'){
@@ -166,7 +168,8 @@ function getNavigationForProfile(prof){
       ['visao-geral','grid','Visão geral'],
       ['financeiro','wallet','Financeiro & Fiado'],
       ['pedidos','board','Pedidos & Faturamento'],
-      ['clientes','users','Clientes & Crédito']
+      ['clientes','users','Clientes & Crédito'],
+      ['api','terminal','Console da API']
     ];
   }
   if(prof.id==='compras'){
@@ -174,7 +177,8 @@ function getNavigationForProfile(prof){
       ['visao-geral','grid','Visão geral'],
       ['fornecedores','compass','Produtores & Compras'],
       ['estoque','box','Estoque & Reposição'],
-      ['catalogo','leaf','Catálogo']
+      ['catalogo','leaf','Catálogo'],
+      ['api','terminal','Console da API']
     ];
   }
   return allNav;
@@ -1263,6 +1267,13 @@ function presentation(){
   </main>`;
 }
 
+function apiBase(){
+  if(typeof window !== 'undefined' && window.location && window.location.protocol === 'file:'){
+    return 'http://127.0.0.1:4173';
+  }
+  return '';
+}
+
 let apiLastResponse = null;
 let apiLastEndpoint = '/health';
 let apiLastStatus = 200;
@@ -1285,13 +1296,15 @@ function apiConsolePage(){
     { method: 'POST', path: '/api/check-weight', body: JSON.stringify({ expectedGrams: 1000, actualGrams: 1045 }), desc: 'Conferência de Peso com Tolerância ±5%', tag: 'Qualidade' }
   ];
 
+  const base = apiBase() || 'http://127.0.0.1:4173';
+
   return pageHeading(
     'INTEGRAÇÃO & SERVIÇOS RESTFUL',
     'Console & Rotas da API',
     'Execute chamadas em tempo real aos endpoints do ERP e catálogo oficial da Estrada Real.',
     `<div class="actions">
-      <a class="btn" href="/api/export/json" download="encantos_export.json">${icon('box')} Baixar JSON</a>
-      <a class="btn" href="/api/export/csv" download="encantos_produtos.csv">${icon('receipt')} Baixar CSV</a>
+      <a class="btn" href="${base}/api/export/json" download="encantos_export.json">${icon('box')} Baixar JSON</a>
+      <a class="btn" href="${base}/api/export/csv" download="encantos_produtos.csv">${icon('receipt')} Baixar CSV</a>
       <a class="btn primary" href="http://127.0.0.1:8000/docs" target="_blank" rel="noopener noreferrer">${icon('link')} Swagger OpenAPI ${icon('arrow')}</a>
     </div>`
   ) + `
@@ -1413,7 +1426,8 @@ document.addEventListener('click',async ev=>{
       try {
         const opts={ method, headers: { 'Content-Type': 'application/json' } };
         if(body) opts.body=body;
-        const res=await fetch(path, opts);
+        const targetUrl = (path.startsWith('http://') || path.startsWith('https://')) ? path : (apiBase() + path);
+        const res=await fetch(targetUrl, opts);
         const t1=performance.now();
         const latency=Math.round(t1-t0);
         const json=await res.json();
