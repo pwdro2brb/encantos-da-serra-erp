@@ -1,0 +1,19 @@
+/* Dark mode styling for catalog table/panel */
+.dark-mode {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+.dark-mode .catalog-grid {
+  background: #1e1e1e;
+}
+.dark-mode .catalog-product {
+  background: #2b2b2b;
+  border-color: #444;
+  color: #e0e0e0;
+}
+.dark-mode .catalog-product h2,
+.dark-mode .catalog-product p,
+.dark-mode .catalog-product .catalog-price strong {
+  color: #e0e0e0;
+}
+
