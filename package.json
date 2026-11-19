@@ -6,7 +6,9 @@
   "homepage": "https://encantos-da-serra-erp-demo.sureporcupine.chatgpt.site",
   "scripts": {
     "start": "node prototipo/server.mjs",
-    "test": "node --test prototipo/core.test.cjs",
+    "test": "node --test prototipo/core.test.cjs prototipo/api.test.cjs",
+    "test:core": "node --test prototipo/core.test.cjs",
+    "test:api": "node --test prototipo/api.test.cjs",
     "check": "node --check prototipo/dist/app.js && node --check prototipo/dist/core.js && node --check prototipo/dist/official-ui.js"
   },
   "engines": {
