@@ -187,72 +187,49 @@ function getNavigationForProfile(prof){
 function shell(content,r){
   const prof=currentProfile();
   const nav=getNavigationForProfile(prof);
-  const title=nav.find(n=>n[0]===r)?.[2]||'Visão geral';
   const openCount=getOrders().filter(o=>!['concluido','cancelado'].includes(o.status)).length;
 
+  const apiLink=nav.find(([id])=>id==='api');
+  const navLink=([id,ico,label])=>`
+    <a class="nav-item" href="#/${id}"${id===r?' aria-current="page"':''}>
+      ${icon(ico)}${label}
+      ${id==='pedidos'?`<span class="nav-count">${openCount}</span>`:''}
+    </a>`;
+
   return `
-  <aside class="sidebar" id="sidebar">
-    <a class="brand" href="#/visao-geral">
-      ${officialLogo('brand-logo')}
-      <div class="brand-name">
-        encantos<br>da serra
-        <small>ESTRADA REAL · ERP</small>
-      </div>
-    </a>
-    <div class="nav-caption">ESPAÇO DE TRABALHO</div>
-    <nav aria-label="Menu principal">
-      ${nav.map(([id,ico,label])=>`
-        <a class="nav-item ${id===r?'active':''}" href="#/${id}">
-          ${icon(ico)}${label}
-          ${id==='pedidos'?`<span class="nav-count">${openCount}</span>`:''}
-        </a>
-      `).join('')}
-    </nav>
-    <div class="sidebar-bottom">
-      <button class="nav-item" data-action="view-rbac" style="border:0;background:transparent;width:100%">
-        ${icon('shield')}Matriz de Permissões
-      </button>
-      <a class="nav-item" href="#/apresentacao">${icon('play')}Apresentação executiva</a>
-      <button class="nav-item" data-action="reset" style="border:0;background:transparent;width:100%">${icon('refresh')}Reiniciar simulação</button>
-      
-      <!-- CARD DE SESSÃO / PERFIL ATIVO -->
-      <div class="session-card">
-        <div class="session-header">
-          <div class="avatar" style="background:${prof.avatarBg};color:${prof.avatarColor}">${prof.initials}</div>
-          <div class="session-info">
-            <strong>${esc(prof.name)}</strong>
-            <small>${esc(prof.role)}</small>
-          </div>
+  <header class="site-header">
+    <div class="header-bar">
+      <a class="brand" href="#/visao-geral">
+        ${officialLogo('brand-logo')}
+        <div class="brand-name">
+          Encantos da Serra
+          <small>ESTRADA REAL · ERP</small>
         </div>
-        <button class="btn-switch-profile" data-action="switch-profile">
-          ${icon('users')} Alternar Perfil
+      </a>
+      ${prof.type==='client' ? customerHeaderContacts() : ''}
+      <div class="header-actions">
+        <button class="role-badge-pill" data-action="switch-profile" title="Alternar perfil" aria-label="Alternar perfil. Perfil ativo: ${esc(prof.name)}">
+          ${icon('users')}<span>${esc(prof.name)}</span>
         </button>
+        <button class="header-button" data-action="alerts" aria-label="Ver alertas de estoque">${icon('bell')}</button>
+        <button class="header-button menu-toggle" data-action="menu" aria-label="Menu principal" aria-expanded="false" aria-controls="main-menu">${icon('menu')}</button>
       </div>
     </div>
-  </aside>
+    <nav class="site-nav" id="main-menu" aria-label="Menu principal">
+      ${nav.filter(([id])=>id!=='api').map(navLink).join('')}
+      <details class="more-options">
+        <summary class="nav-item">Mais opções</summary>
+        <div class="more-options-panel">
+          ${apiLink ? navLink(apiLink) : ''}
+          <button class="nav-item" data-action="view-rbac">${icon('shield')}Matriz de Permissões</button>
+          <a class="nav-item" href="#/apresentacao">${icon('play')}Apresentação executiva</a>
+          <button class="nav-item" data-action="reset">${icon('refresh')}Reiniciar simulação</button>
+        </div>
+      </details>
+    </nav>
+  </header>
 
   <main class="main">
-    <header class="topbar">
-      <div class="actions">
-        <button class="icon-button mobile-menu" data-action="menu" aria-label="Abrir menu">${icon('menu')}</button>
-        <div class="breadcrumb">Encantos da Serra <span>/ &nbsp; ${title}</span></div>
-      </div>
-      <div class="top-actions">
-        <button class="role-badge-pill" data-action="switch-profile" title="Clique para alternar o perfil ativo">
-          ${icon('users')}
-          <span>${esc(prof.name)}</span>
-          <small style="opacity:0.75">(${prof.type==='internal'?'Interno':prof.type==='client'?'Cliente B2B':'Produtor'})</small>
-        </button>
-        <button class="icon-button" data-action="view-rbac" title="Ver matriz de atribuições e permissões deste perfil" style="color:var(--forest)">
-          ${icon('shield')}
-        </button>
-        <span class="estrada-real-badge" title="Identidade Estrada Real aplicada ao Encantos da Serra">
-          ${icon('compass')} Circuito Estrada Real
-        </span>
-        <button class="icon-button" data-action="alerts" aria-label="Ver alertas de estoque">${icon('bell')}</button>
-      </div>
-    </header>
-
     <div class="content">
       ${content}
       <footer class="page-footer">
@@ -261,6 +238,10 @@ function shell(content,r){
       </footer>
     </div>
   </main>`;
+}
+
+function customerHeaderContacts(){
+  return `<address class="header-contacts" aria-label="Contato do Empório">${officialContactItems()}</address>`;
 }
 
 /* TELA DE ACESSO RESTRITO / PERMISSÃO NEGADA (403) */
@@ -654,7 +635,7 @@ function inventory(){
               </td>
               <td><strong>${l.qty}</strong> ${p.unit}</td>
               <td>${res>0?`<span class="badge reserve">🔒 ${res}</span>`:'0'}</td>
-              <td><strong style="color:var(--forest)">${avail}</strong></td>
+              <td><strong style="color:var(--madeira)">${avail}</strong></td>
               <td><span class="badge ${d<=7?'red':d<=15?'amber':'green'}">${d<=7?'Bloqueado (<=7d)':d<=15?'Atenção (<=15d)':'Liberado'}</span></td>
               <td>${esc(l.location)}</td>
               ${canManageStock?`<td><button class="text-link" data-action="loss" data-id="${l.id}" ${!l.qty?'disabled':''}>Registrar perda</button></td>`:''}
@@ -737,7 +718,7 @@ function finance(){
               <td>${money(r.total)}</td>
               <td>${date(r.due)}</td>
               <td>${money(r.total-b)}</td>
-              <td><strong style="color:${b>0?'var(--terracota)':'var(--forest)'}">${money(b)}</strong></td>
+              <td><strong style="color:${b>0?'var(--terracota)':'var(--madeira)'}">${money(b)}</strong></td>
               <td><span class="badge ${b===0?'green':isLate?'red':'amber'}">${b===0?'Quitado':isLate?'Vencido':'A vencer'}</span></td>
               <td>
                 <button class="btn soft" style="font-size:10px;padding:5px 10px" data-action="payment" data-id="${r.id}">
@@ -831,7 +812,7 @@ function rbacModal(){
 
           <div class="rbac-columns">
             <div>
-              <span class="field-label" style="color:var(--forest)">✓ Permissões Concedidas:</span>
+              <span class="field-label" style="color:var(--green)">✓ Permissões Concedidas:</span>
               <ul class="rbac-list allowed">
                 ${p.permissoes.map(a=>`<li>${esc(a)}</li>`).join('')}
               </ul>
@@ -843,7 +824,7 @@ function rbacModal(){
               </ul>
             </div>
           </div>
-          <div style="margin-top:12px;padding-top:10px;border-top:1px solid #f2ede4;font-size:10px;color:var(--muted)">
+          <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--divisor);font-size:10px;color:var(--muted)">
             <strong>Módulos Acessíveis:</strong> ${p.allowedRoutes.join(', ')}
           </div>
         </div>
@@ -1142,6 +1123,7 @@ function publicPage(){
         ${officialLogo('public-logo')}
         <span>encantos da serra<small style="display:block;font-size:10px;color:var(--terracota);letter-spacing:1.5px">CIRCUITO ESTRADA REAL</small></span>
       </a>
+      ${customerHeaderContacts()}
       <a class="text-link" href="#/pedidos">Área da Equipe ${icon('arrow')}</a>
     </header>
 
@@ -1394,13 +1376,22 @@ function nextId(){
 function formError(form,e){ form.querySelector('.form-error').textContent=e.message; }
 
 document.addEventListener('click',async ev=>{
+  const moreOptions=$('.more-options[open]');
+  if(moreOptions){
+    const option=ev.target.closest('.more-options-panel .nav-item');
+    if(option) moreOptions.querySelector('summary').focus();
+    if(option||!moreOptions.contains(ev.target)) moreOptions.open=false;
+  }
   const b=ev.target.closest('[data-action]');
   if(!b||b.disabled) return;
   const {action:a,id,profile:profId}=b.dataset;
   try{
     if(a==='close') closeModal();
     if(a==='navigate'){ closeModal(); go(b.dataset.route); }
-    if(a==='menu') $('#sidebar').classList.toggle('open');
+    if(a==='menu'){
+      const expanded=$('#main-menu').classList.toggle('open');
+      b.setAttribute('aria-expanded', String(expanded));
+    }
     if(a==='alerts'){ go('estoque'); toast('Verifique os lotes em atenção e bloqueados.'); }
     if(a==='public'||a==='new-order') go('solicitar?origem=WhatsApp');
     if(a==='switch-profile') switchProfileModal();
@@ -1713,7 +1704,14 @@ document.addEventListener('submit',ev=>{
 });
 
 document.addEventListener('keydown',ev=>{
-  if(ev.key==='Escape') closeModal();
+  if(ev.key==='Escape'){
+    const moreOptions=$('.more-options[open]');
+    if(moreOptions){
+      moreOptions.open=false;
+      moreOptions.querySelector('summary').focus();
+    }
+    closeModal();
+  }
   if($('.modal')&&ev.key==='Tab'){
     const list=[...$('.modal').querySelectorAll('button,input,select,textarea,a')].filter(x=>!x.disabled&&x.offsetParent!==null);
     if(list.length){
