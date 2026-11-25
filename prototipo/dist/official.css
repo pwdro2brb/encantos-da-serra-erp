@@ -5,11 +5,11 @@
   align-items: center;
   gap: 20px;
   border: 1px solid var(--border);
-  background: linear-gradient(115deg, #fbf7ee 0%, #f4eee2 100%);
+  background: linear-gradient(115deg, var(--taipa) 0%, var(--areia) 100%);
   padding: 18px 24px;
   border-radius: 10px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(35, 47, 40, 0.04);
+  box-shadow: 0 2px 8px rgba(53, 40, 31, 0.04);
   position: relative;
   overflow: hidden;
   border-left: 4px solid var(--ouro);
@@ -18,6 +18,17 @@
   display: flex;
   align-items: center;
   gap: 16px;
+}
+.official-logo,
+.company-logo,
+.public-logo {
+  display: block;
+  width: 64px;
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 .official-banner .eyebrow {
   font-size: 9px;
@@ -29,7 +40,7 @@
   font-size: 23px;
   font-weight: 600;
   margin-bottom: 4px;
-  color: var(--forest);
+  color: var(--madeira);
 }
 .official-banner p {
   font-size: 11px;
@@ -85,17 +96,17 @@
   border-radius: 10px;
   overflow: hidden;
   transition: transform 0.18s, box-shadow 0.18s;
-  box-shadow: 0 2px 6px rgba(35, 47, 40, 0.04);
+  box-shadow: 0 2px 6px rgba(53, 40, 31, 0.04);
   position: relative;
 }
 .catalog-product:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(35, 47, 40, 0.09);
+  box-shadow: 0 10px 24px rgba(53, 40, 31, 0.09);
   border-color: var(--ouro);
 }
 .catalog-image {
   border: 0;
-  background: linear-gradient(180deg, #fbf7ee 0%, #f4eee2 100%);
+  background: linear-gradient(180deg, var(--taipa) 0%, var(--areia) 100%);
   display: block;
   width: 100%;
   height: 205px;
@@ -139,7 +150,7 @@
   line-height: inherit;
   font-size: inherit;
 }
-.catalog-product h2 button:hover { color: var(--forest); }
+.catalog-product h2 button:hover { color: var(--madeira); }
 .catalog-presentation {
   font-size: 11px;
   color: var(--muted);
@@ -160,9 +171,9 @@
   font-size: 26px;
   font-weight: 600;
   letter-spacing: -0.6px;
-  color: var(--forest);
+  color: var(--madeira);
 }
-.catalog-price del { font-size: 12px; color: #a5aca6; }
+.catalog-price del { font-size: 12px; color: var(--muted); }
 .catalog-price small {
   flex-basis: 100%;
   font-size: 9px;
@@ -174,7 +185,7 @@
   justify-content: space-between;
   gap: 10px;
   padding-top: 14px;
-  border-top: 1px solid #f2ede4;
+  border-top: 1px solid var(--divisor);
 }
 .catalog-card-actions .btn { font-size: 11px; padding: 7px 12px; }
 
@@ -184,7 +195,7 @@
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 26px;
-  box-shadow: 0 2px 8px rgba(35, 47, 40, 0.04);
+  box-shadow: 0 2px 8px rgba(53, 40, 31, 0.04);
 }
 .official-categories h2 {
   font-family: var(--font-serif);
@@ -207,7 +218,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  color: var(--forest);
+  color: var(--madeira);
   font-size: 11px;
   font-weight: 600;
   transition: all 0.15s;
@@ -232,7 +243,7 @@
   gap: 24px;
   align-items: center;
   padding: 18px;
-  background: linear-gradient(135deg, #fbf7ee 0%, #f4eee2 100%);
+  background: linear-gradient(135deg, var(--taipa) 0%, var(--areia) 100%);
   border-radius: 10px;
   border: 1px solid var(--border);
 }
@@ -243,7 +254,7 @@
   mix-blend-mode: multiply;
 }
 .official-thumb {
-  background: #fbf7ee !important;
+  background: var(--taipa) !important;
   padding: 3px;
   border: 1px solid var(--border) !important;
 }
@@ -261,7 +272,7 @@
 
 /* COMPANY VIEW */
 .company-hero {
-  background: linear-gradient(135deg, #f4eee2 0%, #ebe2ce 100%);
+  background: linear-gradient(135deg, var(--areia) 0%, #ead6b4 100%);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 34px;
@@ -276,15 +287,8 @@
   gap: 32px;
 }
 .company-logo {
-  height: 130px;
-  width: 150px;
-  object-fit: contain;
-  flex-shrink: 0;
-  background: #ffffff;
-  padding: 10px;
-  border-radius: 12px;
-  border: 2px solid var(--ouro);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 130px;
+  box-shadow: 0 0 0 2px var(--ouro), 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 .company-intro h2 {
   font-size: 34px;
@@ -314,7 +318,7 @@
   gap: 16px;
   margin-top: 26px;
   padding-top: 22px;
-  border-top: 1px solid rgba(195, 153, 67, 0.3);
+  border-top: 1px solid rgba(213, 163, 71, 0.3);
 }
 .company-product-strip button {
   border: 1px solid var(--border);
@@ -353,7 +357,7 @@
   font-size: 22px;
   font-weight: 600;
   margin: 8px 0 6px;
-  color: var(--forest);
+  color: var(--madeira);
 }
 .company-facts p {
   font-size: 11px;
@@ -370,7 +374,7 @@
 .official-contact-list { padding: 0 22px; }
 .official-contact-list > div {
   padding: 15px 0;
-  border-top: 1px solid #f2ede4;
+  border-top: 1px solid var(--divisor);
 }
 .official-contact-list span {
   display: block;
@@ -384,7 +388,7 @@
 }
 .official-contact-list a {
   font-size: 12px;
-  color: var(--forest);
+  color: var(--madeira);
   font-weight: 600;
   overflow-wrap: anywhere;
 }
@@ -402,7 +406,7 @@
   font-family: var(--font-serif);
   font-size: 13px;
   margin: 14px 0 6px;
-  color: var(--forest);
+  color: var(--madeira);
 }
 .provenance-content p {
   font-size: 11px;
@@ -421,7 +425,7 @@
   background: #ffffff;
   border-radius: 10px;
   padding: 24px;
-  box-shadow: 0 2px 6px rgba(35, 47, 40, 0.04);
+  box-shadow: 0 2px 6px rgba(53, 40, 31, 0.04);
 }
 .producer-top {
   display: flex;
@@ -444,7 +448,7 @@
 }
 .progress span {
   display: block;
-  background: linear-gradient(90deg, var(--ouro) 0%, var(--forest) 100%);
+  background: linear-gradient(90deg, var(--ouro) 0%, var(--madeira) 100%);
   height: 100%;
 }
 .micro { font-size: 10px; color: var(--muted); }
@@ -480,5 +484,6 @@
 }
 @media(max-width: 680px) {
   .catalog-grid { grid-template-columns: 1fr; }
+  .official-banner { flex-wrap: wrap; }
   .company-intro { flex-direction: column; align-items: flex-start; }
 }

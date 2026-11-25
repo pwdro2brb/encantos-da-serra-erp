@@ -23,6 +23,15 @@ O link abre pelo navegador em outro computador, sem baixar o projeto e sem login
 
 Leia o [texto das funcionalidades propostas](docs/FUNCIONALIDADES_PROPOSTAS.md) para a explicação completa e os limites de cada módulo.
 
+## Interface e navegação
+
+- O menu superior mostra os módulos disponíveis para o perfil ativo. Em telas menores, use o botão de menu no cabeçalho.
+- **Mais opções** reúne Matriz de Permissões, Apresentação executiva e Reiniciar simulação. O Console da API aparece nesse submenu para os perfis que têm acesso.
+- O cabeçalho do portal Cliente B2B e do formulário público de pedidos exibe links de telefone, WhatsApp, e-mail e Instagram. Os dados são compartilhados com a aba **Sobre a empresa**.
+- A interface usa o logotipo do perfil da marca no Instagram, enquadrado proporcionalmente, e uma paleta de creme, marrom madeira e dourado. O verde identifica indicadores positivos.
+
+[Prévia privada desta interface](https://encantos-da-serra-paleta.wisewasp22.chatgpt.site). O acesso requer a conta autorizada do ChatGPT. Para executar as rotas da API, use o servidor local.
+
 ## Executar localmente
 
 É necessário Node.js 20 ou superior. O protótipo usa HTML, CSS e JavaScript, sem dependências npm.

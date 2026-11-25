@@ -65,9 +65,9 @@ Os preços abaixo são os publicados nas páginas individuais na data da consult
 
 ## Identidade e mídia
 
-- [Logotipo original](https://dcdn-us.mitiendanube.com/stores/004/696/843/themes/common/logo-1394656686-1761403782-507596661cb864881b438d08f757d0da1761403782-480-0.webp), sem edição da arte.
+- A versão inicial do protótipo usava o [logotipo da loja](https://dcdn-us.mitiendanube.com/stores/004/696/843/themes/common/logo-1394656686-1761403782-507596661cb864881b438d08f757d0da1761403782-480-0.webp), sem edição da arte.
 - As treze fotos foram obtidas nos endereços de mídia das páginas individuais. Originais mantidos em `prototipo/dist/assets/official/`, com URL de origem registrada em `official.js`.
-- O layout verde e creme do protótipo foi preservado. Nome, logotipo, fotos e apresentação foram alinhados à loja.
+- A interface atual usa a imagem de perfil do Instagram da marca, salva em formato WebP e exibida com enquadramento circular. A paleta combina creme (`#FAF3E4`), marrom madeira (`#523420`) e dourado (`#D5A347`). [Perfil oficial no Instagram](https://www.instagram.com/encantos.daserra/)
 
 ## Dados que continuam simulados
 
